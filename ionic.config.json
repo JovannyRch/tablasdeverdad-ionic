@@ -1,0 +1,7 @@
+{
+  "name": "tablasdeverdad",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "angular"
+}
