@@ -1,0 +1,61 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="home"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+
+  <ion-grid fixed>
+    <ion-row>
+      <ion-col size="2"></ion-col>
+      <ion-col size="8">
+        <ion-img src="/assets/img/icon.png"></ion-img>
+      </ion-col>
+      <ion-col size="2"></ion-col>
+      <ion-col size="12" class="ion-text-center">
+        Version: {{version || '1.0.2'}}
+      </ion-col>
+
+      <ion-col size="12">
+        <ion-card>
+          <ion-card-content>
+            <div class="ion-text-center">
+              <h3><b>Creado por: Jovanny Rch (j19)</b></h3>
+              <br>
+              Mira mis demás applicaciones <br>
+              <ion-button color="vibrant"
+                href="https://play.google.com/store/apps/developer?id=J19+%26+JM+Studios&hl=es" fill="clear">
+                <ion-icon slot="start" name="md-appstore"></ion-icon>
+                PLAYSTORE
+              </ion-button>
+              <br />
+              <br>¿Algún error o sugerencia? Contactame directamente <br>
+              <ion-button href="https://wa.me/527226227577" fill="clear" color="vibrant">
+                <ion-icon slot="start" name="logo-whatsapp"></ion-icon> WhatsApp
+              </ion-button>
+              <br /><br />
+
+
+              ¿Cómo se hizo la app?<br>
+              <ion-button href="https://www.youtube.com/watch?v=anGBK3crHes" fill="clear" color="vibrant">
+                <ion-icon slot="start" name="logo-youtube"></ion-icon> Video
+              </ion-button>
+              <br>
+              <ion-button href="https://gitlab.com/JovannyRch/tablasdeverdad-ionic" fill="clear" color="vibrant">
+                <ion-icon slot="start" name="logo-github"></ion-icon> Codigo Fuente
+              </ion-button>
+              <br />
+              <br />
+            </div>
+
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+
+
+    </ion-row>
+  </ion-grid>
+
+</ion-content>

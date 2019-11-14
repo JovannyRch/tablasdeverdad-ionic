@@ -1,0 +1,72 @@
+.btn{
+    height: 7vh;
+    padding-top: 5%;
+    font-size: 1.5em;
+    padding-left: 4%;
+    border-radius: 5px;
+    vertical-align: middle;
+}
+
+.btn:hover{
+    background-color:rgba(226, 218, 209, 0.78);
+}
+
+.btn-fm{
+    height: 5vh;
+    padding-top: 10%;
+    padding-left: 4%;
+    border-radius: 5px;
+    vertical-align: middle;
+    background-color: rgb(253, 246, 228);
+}
+
+.vertical-center {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+  }
+
+.btn-doble{
+    height: 14vh;
+    padding-top: 4vh;
+    font-size: 1.5em;
+    padding-left: 4%;
+    border-radius: 5px;
+    background-color: #f49338;
+    color: white;
+}
+
+.orange{
+    color: rgb(245, 147, 55);
+}
+
+.btn-img{
+    height: 7vh;
+    padding-left: 4%;
+    border-radius: 5px;
+    vertical-align: middle;
+}
+
+.borde{
+    border: 1px solid rgb(226, 220, 205);
+}
+$base-color: rgba(250, 245, 239, 0.78);
+.barra-top{
+    background-color: $base-color;
+    .btn.btn-img{
+        margin-top: 0%;
+    }
+}
+
+.operadores{
+    .btn{
+        font-size: 170%
+    }
+    background-color: $base-color;
+}
+
+ion-chip{
+    border: 1px solid rgb(221, 109, 44);
+}

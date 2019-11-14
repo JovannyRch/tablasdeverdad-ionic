@@ -1,0 +1,225 @@
+<ion-content *ngIf="!verGuardadas">
+
+
+
+  <div text-center *ngIf="!ok">
+
+    <ion-grid no-padding style="height: 100vh; background-color: rgb(255, 253, 249);">
+      <ion-row style="height: 5vh;">
+        <ion-col size="12" class="ion-text-left">
+          <ion-chip style="font-size:12px" (click)="fverGuardadas(true)" color="vibrant">
+            <ion-icon style="zoom:1.5;" name="folder-open" style="zoom:1.5;"></ion-icon>
+          </ion-chip>
+        </ion-col>
+      </ion-row>
+      <ion-row style="height: 24vh;">
+        <ion-col size="12"
+          style="text-align: right; padding-top: 15%; padding-left: 4%; padding-right: 4%; font-size: 180%">{{infija}}
+        </ion-col>
+      </ion-row>
+      <ion-row style="height: 72vh" style="padding-top: 8%">
+        <ion-col size="9" style="background-color: rgb(255, 255, 255)">
+
+          <ion-grid no-padding>
+            <ion-row class="barra-top">
+              <ion-col (click)="clear()" size="3" class="borde btn orange">
+                <ion-icon style="zoom:1.5;" name="trash" style="padding-top: 10%"></ion-icon>
+              </ion-col>
+              <ion-col (click)="delete()" size="3" class="borde btn-img" text-center>
+                <ion-img src="assets/img/delete.png" style="width: 60%; margin-left: 10%"></ion-img>
+              </ion-col>
+              <ion-col (click)="clickVar('(')" size="3" class="borde btn">(</ion-col>
+              <ion-col (click)="clickVar(')')" size="3" class="borde btn">)</ion-col>
+            </ion-row>
+            <ion-row>
+
+
+              <ion-col *ngFor="let l of letras" (click)="clickVar(l[caseMm])" size="3" class="borde btn">
+                {{l[caseMm]}}
+              </ion-col>
+
+
+            </ion-row>
+            <ion-row class="operadores">
+              <ion-col class="btn borde" (click)="clickVar('⊕')" style="font-size: 100%" size="4">⊕</ion-col>
+              <ion-col class="btn borde" (click)="clickVar('⊻')" style="font-size: 100%" size="4">⊻</ion-col>
+              <ion-col class="btn borde" (click)="clickVar('⊼')" style="font-size: 100%" size="4">⊼</ion-col>
+            </ion-row>
+          </ion-grid>
+
+        </ion-col>
+        <ion-col size="3">
+          <ion-row>
+            <ion-col size="12" class=" borde btn-fm" (click)="changeCase()">
+              <span *ngIf="caseMm == 1">abc</span>
+              <span *ngIf="caseMm == 0">ABC</span>
+            </ion-col>
+            <ion-col size="12" style="font-size:small" (click)="setOpr(2)" class="borde btn-fm">∨∧¬</ion-col>
+            <ion-col size="12" (click)="setOpr(1)" class="borde btn-fm">|&!</ion-col>
+
+          </ion-row>
+          <ion-row class="operadores">
+
+
+
+            <ion-col class="btn borde" (click)="clickVar(opers.not[modo])" size="12">{{opers.not[modo]}}</ion-col>
+            <ion-col class="btn borde" (click)="clickVar(opers.or[modo])" size="12">{{opers.or[modo]}}</ion-col>
+            <ion-col class="btn borde" (click)="clickVar(opers.and[modo])" size="12">{{opers.and[modo]}}</ion-col>
+            <ion-col class="btn borde" (click)="clickVar('⇔')" size="12">
+              ⇔
+            </ion-col>
+
+            <ion-col class="btn borde" (click)="clickVar('⇒')" size="12">⇒</ion-col>
+            <ion-col class="btn-doble borde" (click)="toPostfix();" size="12">=</ion-col>
+          </ion-row>
+
+        </ion-col>
+
+
+      </ion-row>
+    </ion-grid>
+
+
+  </div>
+  <div #canvas>
+    <div *ngIf="ok" class="ion-padding">
+      <ion-item>
+
+        <ion-chip (click)="back()" color="vibrant">
+          <ion-icon style="zoom:1.5;" name="calculator"></ion-icon>
+        </ion-chip>
+
+
+        <ion-chip (click)="fverGuardadas(true)" color="vibrant">
+          <ion-icon style="zoom:1.5;" name="folder-open"></ion-icon>
+        </ion-chip>
+
+
+      </ion-item>
+      <!--
+        <ion-button (click)="saveImg()" color="success">
+        <ion-icon slot="icon-only" name="camera"></ion-icon>
+      </ion-button>
+      -->
+      <br> <br>
+      <i>La proposición es una <b>{{diagnostico}}</b></i>
+      <br>
+      <ion-item text-center>
+        <ion-label><b><i>f</i> = {{infijaOrg}}</b></ion-label>
+      </ion-item>
+
+
+
+      <ion-grid fixed text-center>
+
+        <ion-row>
+          <ion-col size="12">
+            <ion-button (click)="cambiar01()" color="light">
+              <span *ngIf="conVsFs">0/1</span>
+              <span *ngIf="!conVsFs">V/F</span>
+            </ion-button>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col *ngFor="let variable of variables">
+            <b> {{variable}}</b>
+          </ion-col>
+          <ion-col>
+            <b><i>f</i></b>
+          </ion-col>
+        </ion-row>
+
+        <ion-row *ngFor="let fila of tabla">
+          <ion-col *ngFor="let c of fila">{{checkChange01(c)}}</ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col size="12">
+            <br><br>
+            <ion-chip class="ion-text-center"
+              style="border-radius: 10px; border: 1px solid rgb(221, 109, 44); padding-left: 3%;"
+              (click)="fMostrarProceso()" color="vibrant">
+              <ion-label class="ion-text-center">
+                <span *ngIf="!mostrarProceso">Mostrar proceso</span>
+                <span *ngIf="mostrarProceso">Ocultar proceso</span>
+              </ion-label>
+            </ion-chip>
+
+            <ion-chip class="ion-text-center"
+              style="border-radius: 10px; border: 1px solid rgb(221, 109, 44); padding-left: 3%;" (click)="guardarExp()"
+              color="vibrant">
+              <ion-label>
+                Guardar en memoria
+              </ion-label>
+            </ion-chip>
+
+
+
+          </ion-col>
+        </ion-row>
+
+      </ion-grid>
+
+
+
+      <div *ngIf="mostrarProceso">
+
+        <ion-grid fixed text-center *ngFor="let p of proceso;let i=index">
+          <ion-row>
+            <ion-col>
+              <i>f</i><sub>{{i}}</sub> = <b> {{normalize(p.exp)}}</b>
+            </ion-col>
+          </ion-row>
+
+          <ion-row *ngFor="let v of p.tabla;let i = index">
+            <ion-col> <sub>{{i}}</sub> {{checkChange01(v)}}</ion-col>
+          </ion-row>
+
+        </ion-grid>
+
+      </div>
+      <div class="ion-text-center">
+        <ion-chip style="font-size:12px" routerLink="/about" color="vibrant">
+          Acerca de ...
+        </ion-chip>
+      </div>
+
+
+    </div>
+
+  </div>
+
+
+</ion-content>
+
+
+<ion-content *ngIf="verGuardadas" class="ion-padding">
+
+  <ion-chip style="font-size:2rem" (click)="fverGuardadas(false)" color="vibrant">
+    <ion-icon style="zoom:1.5;" name="calculator"></ion-icon>
+  </ion-chip>
+  <br><br>
+  <i>Click para ver la tabla</i>
+  <ion-list>
+    <ion-item *ngFor="let e of expresionesGuardadas; let i=index" (click)="verExp(e)"
+      [ngStyle]="{'background-color: red;': i%2 == 0}">
+      <ion-label>{{e}}</ion-label>
+
+      <ion-icon style="zoom:1.5;" (click)="eliminarExp(i)" slot="end" name="trash"></ion-icon>
+
+    </ion-item>
+  </ion-list>
+
+  <br><br>
+  <ion-footer>
+    <ion-toolbar>
+      <ion-title>
+        <ion-chip style="font-size:12px" routerLink="/about" color="vibrant">
+          Acerca de ...
+        </ion-chip>
+      </ion-title>
+    </ion-toolbar>
+  </ion-footer>
+
+</ion-content>
