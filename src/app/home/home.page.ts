@@ -1,10 +1,10 @@
-import { Component, OnInit, AfterViewInit, ElementRef, ViewChild, Renderer2 } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
 import { Storage } from '@ionic/storage';
-import { ToastController } from '@ionic/angular';
-
-
-
-
+import { ToastController, Platform } from '@ionic/angular';
+import { StatusBar } from '@ionic-native/status-bar/ngx';
+import { SplashScreen } from '@ionic-native/splash-screen/ngx';
+import { AdMobFree, AdMobFreeBannerConfig } from '@ionic-native/admob-free/ngx';
+//importamos nuestro plugin
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
@@ -12,12 +12,25 @@ import { ToastController } from '@ionic/angular';
 })
 export class HomePage implements OnInit, AfterViewInit {
 
+  constructor(platform: Platform,
+    private admobFree: AdMobFree,
+    private storage: Storage,
+    public toastController: ToastController,
+    statusBar: StatusBar,
+    splashScreen: SplashScreen
+  ) {
+    platform.ready().then(() => {
+      statusBar.styleDefault();
+      splashScreen.hide();
+      //this.pushAdmob();
+    });
+  }
 
   @ViewChild('canvas', { static: false }) canvas: ElementRef;
   ngAfterViewInit() {
 
   }
-
+  expresionesGuardadas: any = [];
   ngOnInit() {
     this.storage.get('expresiones').then((val) => {
       if (val) {
@@ -26,15 +39,26 @@ export class HomePage implements OnInit, AfterViewInit {
         this.storage.set('expresiones', this.expresionesGuardadas);
       }
     });
+    this.pushAdmob();
   }
 
+  pushAdmob() {
+    const bannerConfig: AdMobFreeBannerConfig = {
+      id: 'ca-app-pub-4665787383933447/6762703339',
+      //id: 'ca-app-pub-3940256099942544/6300978111',
+      //
+      isTesting: false,
+      autoShow: true,
+    };
+    this.admobFree.banner.config(bannerConfig);
 
+    this.admobFree.banner.prepare()
+      .then(() => {
+        this.admobFree.banner.show();
+        console.log("show banner");
+      });
+  }
 
-  constructor(private storage: Storage, public toastController: ToastController, private renderer: Renderer2) { }
-
-
-
-  expresionesGuardadas = [];
 
   postfija: string = "";
   infija: string = "";

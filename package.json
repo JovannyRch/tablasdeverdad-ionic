@@ -20,6 +20,7 @@
     "@angular/platform-browser": "~8.1.2",
     "@angular/platform-browser-dynamic": "~8.1.2",
     "@angular/router": "~8.1.2",
+    "@ionic-native/admob-free": "^5.17.0",
     "@ionic-native/app-version": "^5.16.0",
     "@ionic-native/core": "^5.0.0",
     "@ionic-native/file": "^5.14.0",
@@ -28,8 +29,11 @@
     "@ionic-native/status-bar": "^5.0.0",
     "@ionic/angular": "^4.7.1",
     "@ionic/storage": "^2.2.0",
-    "cordova-android": "8.1.0",
+    "cordova-admob-sdk": "^0.24.1",
+    "cordova-android": "^8.1.0",
+    "cordova-plugin-admob-free": "^0.27.0",
     "cordova-plugin-app-version": "^0.1.9",
+    "cordova-promise-polyfill": "0.0.2",
     "cordova-sqlite-storage": "^3.3.0",
     "core-js": "^2.5.4",
     "dom-to-image": "^2.6.0",
@@ -82,7 +86,10 @@
       },
       "cordova-plugin-ionic-keyboard": {},
       "cordova-plugin-file": {},
-      "cordova-plugin-app-version": {}
+      "cordova-plugin-app-version": {},
+      "cordova-plugin-admob-free": {
+        "ADMOB_APP_ID": "ca-app-pub-4665787383933447~4689744776"
+      }
     },
     "platforms": [
       "android"
