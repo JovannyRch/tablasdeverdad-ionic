@@ -1,67 +1,34 @@
-import { Component, OnInit, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from "@angular/router";
 import { Storage } from '@ionic/storage';
 import { ToastController, Platform } from '@ionic/angular';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
-import { AdMobFree, AdMobFreeBannerConfig } from '@ionic-native/admob-free/ngx';
-import { RepositorioService } from "../services/repositorio.service";
-//importamos nuestro plugin
 @Component({
-  selector: 'app-home',
-  templateUrl: 'home.page.html',
-  styleUrls: ['home.page.scss'],
+  selector: 'app-resultado',
+  templateUrl: './resultado.page.html',
+  styleUrls: ['./resultado.page.scss'],
 })
-export class HomePage implements OnInit, AfterViewInit {
+export class ResultadoPage implements OnInit {
 
-  constructor(platform: Platform,
-    private admobFree: AdMobFree,
+  constructor(
+    private activeRoute: ActivatedRoute,
     private storage: Storage,
     public toastController: ToastController,
-    statusBar: StatusBar,
-    splashScreen: SplashScreen,
-    private repositorio: RepositorioService
-  ) {
-    platform.ready().then(() => {
-      statusBar.styleDefault();
-      splashScreen.hide();
-      //this.pushAdmob();
-    });
-  }
+    private statusBar: StatusBar,
+    private splashScreen: SplashScreen
+  ) { }
 
-  @ViewChild('canvas', { static: false }) canvas: ElementRef;
-  ngAfterViewInit() {
-
-  }
-  expresionesGuardadas: any = [];
   ngOnInit() {
-    this.storage.get('expresiones').then((val) => {
-      if (val) {
-        this.expresionesGuardadas = val;
-      } else {
-        this.storage.set('expresiones', this.expresionesGuardadas);
-      }
-    });
-    this.pushAdmob();
-  }
-
-  pushAdmob() {
-    const bannerConfig: AdMobFreeBannerConfig = {
-      id: 'ca-app-pub-4665787383933447/6762703339',
-      //id: 'ca-app-pub-3940256099942544/6300978111',
-      //
-      isTesting: false,
-      autoShow: true,
-    };
-    this.admobFree.banner.config(bannerConfig);
-
-    this.admobFree.banner.prepare()
-      .then(() => {
-        this.admobFree.banner.show();
-        console.log("show banner");
-      });
+    this.infija = this.activeRoute.snapshot.paramMap.get("expresion");
+    this.fecha = this.activeRoute.snapshot.paramMap.get("fecha");
+    this.desc = this.activeRoute.snapshot.paramMap.get("desc");
+    this.toPostfix();
   }
 
 
+  fecha: string = "";
+  desc: string = "";
   postfija: string = "";
   infija: string = "";
   infijaOrg: string = "";
@@ -90,9 +57,8 @@ export class HomePage implements OnInit, AfterViewInit {
 
   verGuardadas: boolean = false;
   mostrarProceso: boolean = false;
-  guardarEnNube: boolean = false;
+  ok: boolean = false;
 
-  descripcion: string = "";
 
   cambiar01() {
     this.conVsFs = !this.conVsFs;
@@ -106,58 +72,9 @@ export class HomePage implements OnInit, AfterViewInit {
     return x;
   }
 
-  activarGuardarEnNube() {
-    this.guardarEnNube = !this.guardarEnNube;
-    this.descripcion = "";
-  }
-
-
-
 
   caseMm: number = 1;
-  letras: any = [
-    { 1: "A", 0: "a" },
-    { 1: "B", 0: "b" },
-    { 1: "C", 0: "c" },
-    { 1: "D", 0: "d" },
-    { 1: "E", 0: "e" },
-    { 1: "F", 0: "f" },
 
-    { 1: "G", 0: "g" },
-    { 1: "H", 0: "h" },
-    { 1: "I", 0: "i" },
-    { 1: "J", 0: "j" },
-    { 1: "K", 0: "k" },
-
-    { 1: "L", 0: "l" },
-    { 1: "M", 0: "m" },
-    { 1: "N", 0: "n" },
-    { 1: "O", 0: "o" },
-
-    { 1: "P", 0: "p" },
-    { 1: "Q", 0: "q" },
-    { 1: "R", 0: "r" },
-    { 1: "S", 0: "s" },
-    { 1: "T", 0: "t" },
-    { 1: "U", 0: "u" },
-    { 1: "V", 0: "v" },
-    { 1: "W", 0: "w" },
-    { 1: "X", 0: "x" },
-    { 1: "Y", 0: "y" },
-    { 1: "Z", 0: "z" },
-
-
-
-
-  ];
-
-  //bandera para saber si una expresion es correcta
-  ok: boolean = false;
-
-
-  saveImg() {
-
-  }
 
   fMostrarProceso() {
     this.mostrarProceso = !this.mostrarProceso;
@@ -192,17 +109,7 @@ export class HomePage implements OnInit, AfterViewInit {
 
 
 
-  guardarExp() {
-    if (this.infijaOrg) {
-      if (this.expresionesGuardadas.includes(this.infijaOrg)) {
-        this.presentToast("Ya ha sido guardado previamente");
-      } else {
-        this.expresionesGuardadas.push(this.infijaOrg);
-        this.storage.set("expresiones", this.expresionesGuardadas);
-        this.presentToast("Guardado exitosamente :)");
-      }
-    }
-  }
+
 
   async presentToast(message: string) {
     const toast = await this.toastController.create({
@@ -212,10 +119,7 @@ export class HomePage implements OnInit, AfterViewInit {
     toast.present();
   }
 
-  eliminarExp(index: number) {
-    this.expresionesGuardadas.splice(index, 1);
-    this.storage.set("expresiones", this.expresionesGuardadas);
-  }
+
 
   setModo(cadena: string) {
     let aux: string = cadena;
@@ -269,9 +173,6 @@ export class HomePage implements OnInit, AfterViewInit {
     }
   }
 
-  back() {
-    this.ok = false;
-  }
 
   clearMem() {
     this.tabla = [];
@@ -612,16 +513,17 @@ export class HomePage implements OnInit, AfterViewInit {
     return 0;
   }
 
-
-  guardarDB() {
-    let registro = {
-      expresion: this.infijaOrg,
-      desc: this.descripcion,
-      fecha: new Date()
-    };
-    this.repositorio.create(registro);
-    this.descripcion = "";
-    this.guardarEnNube = false;
+  formatDate(date) {
+    //date = date.toDate();
+    var hours = date.getHours();
+    var minutes = date.getMinutes();
+    var day = date.getDay();
+    var year = date.getFullYear();
+    var month = date.getMonth() + 1;
+    minutes = minutes < 10 ? '0' + minutes : minutes;
+    var strTime = day + '/' + month + "/" + year;
+    return strTime;
   }
+
 
 }

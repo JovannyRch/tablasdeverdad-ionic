@@ -1,0 +1,18 @@
+<ion-header>
+  <ion-toolbar color="vibrant">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Temas</ion-title>
+  </ion-toolbar>
+
+</ion-header>
+<ion-content>
+  <div style="height: 100vh; background-color: rgb(255, 253, 249);">
+    <ion-list style="background-color: rgb(255, 253, 249);">
+      <ion-item color="fondo" *ngFor="let tema of temas; let i = index" [routerLink]="'/contenido/'+i+'/'+tema">
+        <ion-label>{{tema}}</ion-label>
+      </ion-item>
+    </ion-list>
+  </div>
+</ion-content>

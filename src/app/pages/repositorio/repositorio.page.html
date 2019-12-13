@@ -1,0 +1,23 @@
+<ion-content>
+  <ion-item>
+    <ion-chip routerDirection="back" routerLink="/home" color="vibrant">
+      <ion-icon style="zoom:1.5;" name="arrow-round-back"></ion-icon>
+    </ion-chip>
+  </ion-item>
+  <ion-item detail *ngFor="let e of expresiones" [routerLink]="'/resultado/'+e.expresion+'/'+e.fecha+'/'+e.desc">
+    <ion-card style="width: 100%;" no-border>
+      <ion-card-header>
+
+        <ion-card-title>{{e.expresion}}</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <div *ngIf="e.desc">
+          <span>{{e.desc}}</span>
+          <br>
+        </div>
+        <i style="text-align: right;">{{formatAMPM(e.fecha)}}</i>
+      </ion-card-content>
+    </ion-card>
+
+  </ion-item>
+</ion-content>

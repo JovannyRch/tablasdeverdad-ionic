@@ -1,4 +1,4 @@
-<ion-content *ngIf="!verGuardadas">
+<ion-content *ngIf="!verGuardadas && !guardarEnNube">
 
 
 
@@ -9,6 +9,12 @@
         <ion-col size="12" class="ion-text-left">
           <ion-chip style="font-size:12px" (click)="fverGuardadas(true)" color="vibrant">
             <ion-icon style="zoom:1.5;" name="folder-open" style="zoom:1.5;"></ion-icon>
+          </ion-chip>
+          <ion-chip style="font-size:12px" routerLink="/repositorio" color="vibrant">
+            <ion-icon style="zoom:1.5;" name="cloud" style="zoom:1.5;"></ion-icon>
+          </ion-chip>
+          <ion-chip style="font-size:12px" routerLink="/temas" color="vibrant">
+            <ion-icon style="zoom:1.5;" name="book" style="zoom:1.5;"></ion-icon>
           </ion-chip>
         </ion-col>
       </ion-row>
@@ -89,7 +95,9 @@
           <ion-icon style="zoom:1.5;" name="calculator"></ion-icon>
         </ion-chip>
 
-
+        <ion-chip style="font-size:12px" routerLink="/repositorio" color="vibrant">
+          <ion-icon style="zoom:1.5;" name="cloud" style="zoom:1.5;"></ion-icon>
+        </ion-chip>
         <ion-chip (click)="fverGuardadas(true)" color="vibrant">
           <ion-icon style="zoom:1.5;" name="folder-open"></ion-icon>
         </ion-chip>
@@ -115,24 +123,26 @@
         <ion-row>
           <ion-col size="12">
             <ion-button (click)="cambiar01()" color="light">
-              <span *ngIf="conVsFs">0/1</span>
-              <span *ngIf="!conVsFs">V/F</span>
+              <span *ngIf="!conVsFs">0/1</span>
+              <span *ngIf="conVsFs">V/F</span>
             </ion-button>
           </ion-col>
         </ion-row>
 
-        <ion-row>
-          <ion-col *ngFor="let variable of variables">
-            <b> {{variable}}</b>
-          </ion-col>
-          <ion-col>
-            <b><i>f</i></b>
-          </ion-col>
-        </ion-row>
 
-        <ion-row *ngFor="let fila of tabla">
-          <ion-col *ngFor="let c of fila">{{checkChange01(c)}}</ion-col>
-        </ion-row>
+        <table>
+          <thead>
+            <th *ngFor="let variable of variables">{{variable}}</th>
+            <th>f</th>
+          </thead>
+          <tbody>
+            <tr *ngFor="let fila of tabla">
+              <td *ngFor="let c of fila">{{checkChange01(c)}}</td>
+            </tr>
+          </tbody>
+        </table>
+
+
 
         <ion-row>
           <ion-col size="12">
@@ -154,9 +164,19 @@
               </ion-label>
             </ion-chip>
 
+            <ion-chip class="ion-text-center"
+              style="border-radius: 10px; border: 1px solid rgb(221, 109, 44); padding-left: 3%;"
+              (click)="activarGuardarEnNube()" color="vibrant">
+              <ion-label>
+                <ion-icon name="cloud-circle" style="zoom:1.5;"></ion-icon>
+                Guardar en nube
+              </ion-label>
+            </ion-chip>
+
 
 
           </ion-col>
+
         </ion-row>
 
       </ion-grid>
@@ -166,15 +186,17 @@
       <div *ngIf="mostrarProceso">
 
         <ion-grid fixed text-center *ngFor="let p of proceso;let i=index">
-          <ion-row>
-            <ion-col>
-              <i>f</i><sub>{{i}}</sub> = <b> {{normalize(p.exp)}}</b>
-            </ion-col>
-          </ion-row>
+          <table size="12">
+            <thead>
+              <th><i>f</i><sub>{{i}}</sub> = <b> {{normalize(p.exp)}}</b></th>
+            </thead>
+            <tbody>
+              <tr *ngFor="let v of p.tabla;let i = index">
+                <td><sub>{{i}}</sub> {{checkChange01(v)}}</td>
+              </tr>
+            </tbody>
+          </table>
 
-          <ion-row *ngFor="let v of p.tabla;let i = index">
-            <ion-col> <sub>{{i}}</sub> {{checkChange01(v)}}</ion-col>
-          </ion-row>
 
         </ion-grid>
 
@@ -224,4 +246,35 @@
     </ion-toolbar>
   </ion-footer>
 
+</ion-content>
+
+<ion-content *ngIf="guardarEnNube" class="ion-padding">
+
+  <ion-grid fixed>
+    <ion-row class="ion-text-center">
+      <ion-col size="12">
+        <i>Expresión:</i> <br> <b>{{infijaOrg}}</b>
+      </ion-col>
+      <ion-col size="12" *ngIf="guardarEnNube" class="ion-text-center">
+        <ion-item>
+          <ion-textarea rows="2" cols="20" [(ngModel)]="descripcion" placeholder="Ingresa una descripción...">
+          </ion-textarea>
+        </ion-item>
+
+        <ion-chip style="border-radius: 10px; border: 1px solid rgb(221, 109, 44); padding-left: 3%;"
+          (click)="activarGuardarEnNube()" color="vibrant">
+          <ion-label>
+            Cancelar
+          </ion-label>
+        </ion-chip>
+        <ion-chip style="border-radius: 10px; border: 1px solid rgb(221, 109, 44); padding-left: 3%;"
+          (click)="guardarDB()" color="vibrant">
+          <ion-label>
+            <ion-icon name="cloud-upload" style="zoom:1.5;"></ion-icon>
+            Subir
+          </ion-label>
+        </ion-chip>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>
