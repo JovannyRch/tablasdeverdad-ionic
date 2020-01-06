@@ -1,0 +1,29 @@
+<ion-content class="ion-padding">
+
+  <ion-chip style="font-size:2rem" (click)="atras()" color="vibrant">
+    <ion-icon style="zoom:1.5;" name="arrow-round-back"></ion-icon>
+  </ion-chip>
+  <br><br>
+  <i>Click para ver la tabla</i>
+  <ion-list>
+    <ion-item *ngFor="let e of expresionesGuardadas; let i=index" [routerLink]="'/resultado/'+e"
+      [ngStyle]="{'background-color: red;': i%2 == 0}">
+      <ion-label>{{e}}</ion-label>
+
+      <ion-icon style="zoom:1.5;" (click)="eliminarExp(i)" slot="end" name="trash"></ion-icon>
+
+    </ion-item>
+  </ion-list>
+
+  <br><br>
+  <ion-footer>
+    <ion-toolbar>
+      <ion-title>
+        <ion-chip style="font-size:12px" routerLink="/about" color="vibrant">
+          Acerca de ...
+        </ion-chip>
+      </ion-title>
+    </ion-toolbar>
+  </ion-footer>
+
+</ion-content>

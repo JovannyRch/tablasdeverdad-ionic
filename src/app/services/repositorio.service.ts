@@ -15,7 +15,8 @@ export class RepositorioService {
   }
 
   read() {
-    return this.db.collection('expresiones').snapshotChanges();
+    return this.db.collection('expresiones', ref =>
+      ref.orderBy('fecha', 'desc')).snapshotChanges();
   }
 
   update(recordID, record) {

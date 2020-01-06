@@ -17,14 +17,15 @@ export class RepositorioPage implements OnInit {
     desc: '',
     fecha: ''
   };
-
+  cargando: boolean = true;
   expresiones = [];
+  hayInternet = true;
   ngOnInit() {
-
     this.cargarExpresiones();
   }
 
   cargarExpresiones() {
+    this.cargando = true;
     this.db.read().subscribe(
       data => {
         this.expresiones = data.map(
@@ -38,6 +39,8 @@ export class RepositorioPage implements OnInit {
             };
           }
         )
+        this.cargando = false;
+        this.hayInternet = true;
         console.log(this.expresiones);
 
       }

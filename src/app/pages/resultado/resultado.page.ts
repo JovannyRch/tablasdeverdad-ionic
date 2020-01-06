@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from "@angular/router";
 import { Storage } from '@ionic/storage';
-import { ToastController, Platform } from '@ionic/angular';
+import { ToastController, Platform, NavController } from '@ionic/angular';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
+import { RepositorioService } from "../../services/repositorio.service";
 @Component({
   selector: 'app-resultado',
   templateUrl: './resultado.page.html',
@@ -16,15 +17,45 @@ export class ResultadoPage implements OnInit {
     private storage: Storage,
     public toastController: ToastController,
     private statusBar: StatusBar,
-    private splashScreen: SplashScreen
+    private splashScreen: SplashScreen,
+    private navCtrl: NavController,
+    private repositorio: RepositorioService
   ) { }
 
+  expresion: any;
+  guardarEnNube: boolean = false;
+  descripcion: string = "";
   ngOnInit() {
     this.infija = this.activeRoute.snapshot.paramMap.get("expresion");
-    this.fecha = this.activeRoute.snapshot.paramMap.get("fecha");
     this.desc = this.activeRoute.snapshot.paramMap.get("desc");
+    this.verExp(this.infija);
     this.toPostfix();
+
+    this.storage.get('expresiones').then((val) => {
+      if (val) {
+        this.expresionesGuardadas = val;
+      } else {
+        this.storage.set('expresiones', this.expresionesGuardadas);
+      }
+    });
   }
+
+  activarGuardarEnNube() {
+    this.guardarEnNube = !this.guardarEnNube;
+    this.descripcion = "";
+  }
+
+  guardarDB() {
+    let registro = {
+      expresion: this.infijaOrg,
+      desc: this.descripcion,
+      fecha: new Date()
+    };
+    this.repositorio.create(registro);
+    this.descripcion = "";
+    this.guardarEnNube = false;
+  }
+
 
 
   fecha: string = "";
@@ -59,7 +90,7 @@ export class ResultadoPage implements OnInit {
   mostrarProceso: boolean = false;
   ok: boolean = false;
 
-
+  expresionesGuardadas: any = [];
   cambiar01() {
     this.conVsFs = !this.conVsFs;
   }
@@ -119,6 +150,21 @@ export class ResultadoPage implements OnInit {
     toast.present();
   }
 
+  regresar() {
+    this.navCtrl.pop();
+  }
+
+  guardarExp() {
+    if (this.infijaOrg) {
+      if (this.expresionesGuardadas.includes(this.infijaOrg)) {
+        this.presentToast("Ya ha sido guardado previamente");
+      } else {
+        this.expresionesGuardadas.push(this.infijaOrg);
+        this.storage.set("expresiones", this.expresionesGuardadas);
+        this.presentToast("Guardado exitosamente :)");
+      }
+    }
+  }
 
 
   setModo(cadena: string) {
@@ -441,13 +487,17 @@ export class ResultadoPage implements OnInit {
 
 
 
-  //Sustituir dos varibles juntas por la operación AND
+  //Sustituir dos variables juntas por la operación AND
   check(infija: string) {
     let res = "";
     for (let i = 0; i < infija.length - 1; i++) {
       let c = infija[i];
       let cNext = infija[i + 1];
       if ((cNext === "!" && this.varNames.includes(c))) {
+
+        res += c + "&";
+      }
+      else if (c === ")" && cNext === "!") {
 
         res += c + "&";
       }
