@@ -23,7 +23,7 @@
     <i>La proposición es una <b>{{diagnostico}}</b></i>
     <br>
     <ion-item text-center>
-      <ion-label><b><i>f</i> = {{infijaOrg}}</b></ion-label>
+      <ion-label><b><i>F</i> = {{infijaOrg}}</b></ion-label>
     </ion-item>
 
 
@@ -97,11 +97,11 @@
       <ion-grid fixed text-center *ngFor="let p of proceso;let i=index">
         <table size="12">
           <thead>
-            <th><i>f</i><sub>{{i}}</sub> = <b> {{normalize(p.exp)}}</b></th>
+            <th><i>F</i><sub>{{i+1}}</sub> = <b> {{normalize(p.exp)}}</b></th>
           </thead>
           <tbody>
             <tr *ngFor="let v of p.tabla;let i = index">
-              <td><sub>{{i}}</sub> {{checkChange01(v)}}</td>
+              <td>f<sub>{{i+1}}</sub> {{checkChange01(v)}}</td>
             </tr>
           </tbody>
         </table>

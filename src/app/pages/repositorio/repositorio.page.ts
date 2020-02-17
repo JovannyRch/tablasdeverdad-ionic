@@ -58,7 +58,7 @@ export class RepositorioPage implements OnInit {
     date = date.toDate();
     var hours = date.getHours();
     var minutes = date.getMinutes();
-    var day = date.getDay();
+    var day = date.getDate();
     var year = date.getFullYear();
     var month = date.getMonth() + 1;
     minutes = minutes < 10 ? '0' + minutes : minutes;

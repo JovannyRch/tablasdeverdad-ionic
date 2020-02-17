@@ -1,8 +1,8 @@
-<ion-content *ngIf="!verGuardadas && !guardarEnNube">
+<ion-content>
 
 
 
-  <div text-center *ngIf="!ok">
+  <div text-center>
 
     <ion-grid no-padding style="height: 100vh; background-color: rgb(255, 253, 249);">
       <ion-row style="height: 5vh;">
@@ -14,9 +14,13 @@
             <ion-icon style="zoom:1.5;" name="cloud" style="zoom:1.5;"></ion-icon>
           </ion-chip>
           <ion-chip style="font-size:12px" routerLink="/temas" color="vibrant">
-            <ion-icon style="zoom:1.5;" name="book" style="zoom:1.5;"></ion-icon>
+            <ion-icon style="zoom:1.5;" name="help" style="zoom:1.5;"></ion-icon>
+          </ion-chip>
+          <ion-chip style="font-size:12px" routerLink="/about" color="vibrant">
+            <ion-icon style="zoom:1.5;" name="information" style="zoom:1.5;"></ion-icon>
           </ion-chip>
         </ion-col>
+
       </ion-row>
       <ion-row style="height: 24vh;">
         <ion-col size="12"
@@ -47,9 +51,9 @@
 
             </ion-row>
             <ion-row class="operadores">
-              <ion-col class="btn borde" (click)="clickVar('⊕')" style="font-size: 100%" size="4">⊕</ion-col>
               <ion-col class="btn borde" (click)="clickVar('⊻')" style="font-size: 100%" size="4">⊻</ion-col>
               <ion-col class="btn borde" (click)="clickVar('⊼')" style="font-size: 100%" size="4">⊼</ion-col>
+              <ion-col class="btn borde" (click)="clickVar('↓')" style="font-size: 100%" size="4">↓</ion-col>
             </ion-row>
           </ion-grid>
 
@@ -76,128 +80,10 @@
             </ion-col>
 
             <ion-col class="btn borde" (click)="clickVar('⇒')" size="12">⇒</ion-col>
-            <ion-col class="btn-doble borde" [routerLink]="'/resultado/'+infija" size="12">=</ion-col>
+            <ion-col class="btn-doble borde" (click)="verResultado()" size="12">=</ion-col>
           </ion-row>
-
         </ion-col>
-
-
       </ion-row>
     </ion-grid>
-
-
   </div>
-  <div #canvas>
-    <div *ngIf="ok" class="ion-padding">
-      <ion-item>
-
-        <ion-chip (click)="back()" color="vibrant">
-          <ion-icon style="zoom:1.5;" name="calculator"></ion-icon>
-        </ion-chip>
-
-        <ion-chip style="font-size:12px" routerLink="/repositorio" color="vibrant">
-          <ion-icon style="zoom:1.5;" name="cloud" style="zoom:1.5;"></ion-icon>
-        </ion-chip>
-        <ion-chip (click)="fverGuardadas(true)" color="vibrant">
-          <ion-icon style="zoom:1.5;" name="folder-open"></ion-icon>
-        </ion-chip>
-
-
-      </ion-item>
-      <!--
-        <ion-button (click)="saveImg()" color="success">
-        <ion-icon slot="icon-only" name="camera"></ion-icon>
-      </ion-button>
-      -->
-      <br> <br>
-      <i>La proposición es una <b>{{diagnostico}}</b></i>
-      <br>
-      <ion-item text-center>
-        <ion-label><b><i>f</i> = {{infijaOrg}}</b></ion-label>
-      </ion-item>
-
-
-
-      <ion-grid fixed text-center>
-
-        <ion-row>
-          <ion-col size="12">
-            <ion-button (click)="cambiar01()" color="light">
-              <span *ngIf="!conVsFs">0/1</span>
-              <span *ngIf="conVsFs">V/F</span>
-            </ion-button>
-          </ion-col>
-        </ion-row>
-
-
-        <table>
-          <thead>
-            <th *ngFor="let variable of variables">{{variable}}</th>
-            <th>f</th>
-          </thead>
-          <tbody>
-            <tr *ngFor="let fila of tabla">
-              <td *ngFor="let c of fila">{{checkChange01(c)}}</td>
-            </tr>
-          </tbody>
-        </table>
-
-
-
-        <ion-row>
-          <ion-col size="12">
-            <br><br>
-            <ion-chip class="ion-text-center"
-              style="border-radius: 10px; border: 1px solid rgb(221, 109, 44); padding-left: 3%;"
-              (click)="fMostrarProceso()" color="vibrant">
-              <ion-label class="ion-text-center">
-                <span *ngIf="!mostrarProceso">Mostrar proceso</span>
-                <span *ngIf="mostrarProceso">Ocultar proceso</span>
-              </ion-label>
-            </ion-chip>
-
-
-
-
-
-          </ion-col>
-
-        </ion-row>
-
-      </ion-grid>
-
-
-
-      <div *ngIf="mostrarProceso">
-
-        <ion-grid fixed text-center *ngFor="let p of proceso;let i=index">
-          <table size="12">
-            <thead>
-              <th><i>f</i><sub>{{i}}</sub> = <b> {{normalize(p.exp)}}</b></th>
-            </thead>
-            <tbody>
-              <tr *ngFor="let v of p.tabla;let i = index">
-                <td><sub>{{i}}</sub> {{checkChange01(v)}}</td>
-              </tr>
-            </tbody>
-          </table>
-
-
-        </ion-grid>
-
-      </div>
-      <div class="ion-text-center">
-        <ion-chip style="font-size:12px" routerLink="/about" color="vibrant">
-          Acerca de ...
-        </ion-chip>
-      </div>
-
-
-
-
-    </div>
-
-  </div>
-
-
 </ion-content>

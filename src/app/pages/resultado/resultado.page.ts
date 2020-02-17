@@ -2,8 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from "@angular/router";
 import { Storage } from '@ionic/storage';
 import { ToastController, Platform, NavController } from '@ionic/angular';
-import { StatusBar } from '@ionic-native/status-bar/ngx';
-import { SplashScreen } from '@ionic-native/splash-screen/ngx';
+
 import { RepositorioService } from "../../services/repositorio.service";
 @Component({
   selector: 'app-resultado',
@@ -16,8 +15,7 @@ export class ResultadoPage implements OnInit {
     private activeRoute: ActivatedRoute,
     private storage: Storage,
     public toastController: ToastController,
-    private statusBar: StatusBar,
-    private splashScreen: SplashScreen,
+
     private navCtrl: NavController,
     private repositorio: RepositorioService
   ) { }
@@ -66,8 +64,8 @@ export class ResultadoPage implements OnInit {
   infijaAux: string = "";
 
   variables: string[] = [];
-  operadores: string = "!&|()⇔⇒⊼⊻⊕";
-  opr2var: string = "|&⇔⇒⊼⊻⊕";
+  operadores: string = "!&|()⇔⇒⊼⊻↓";
+  opr2var: string = "|&⇔⇒⊼⊻↓";
   varMays: string = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
   varNames: string = this.varMays + this.varMays.toLowerCase();
   tabla: any = [];
@@ -253,10 +251,10 @@ export class ResultadoPage implements OnInit {
     let prec = {};
     prec["⊼"] = 8;
     prec["⊻"] = 7;
-    prec["!"] = 6;
-    prec["&"] = 5;
-    prec["|"] = 4;
-    prec["⊕"] = 4;
+    prec["↓"] = 6;
+    prec["!"] = 5;
+    prec["&"] = 4;
+    prec["|"] = 3;
     prec["⇒"] = 2;
     prec["⇔"] = 1;
     prec["("] = 0;
@@ -368,20 +366,15 @@ export class ResultadoPage implements OnInit {
         this.variables.push(caracter);
       }
     }
-
     this.variables = this.variables.sort();
-
     let nCombinaciones = Math.pow(2, this.variables.length);
     this.getProceso(this.postfija);
-
     let cant0 = 0;
     let cant1 = 0;
-
-    for (let i = 0; i < nCombinaciones; i++) {
+    for (let i = nCombinaciones - 1; i >= 0; i--) {
       let combinacion = this.nBits(i.toString(2), this.variables.length)
       let susChida = this.sustituir(combinacion, this.postfija);
       let resultado = this.evaluar(susChida);
-
       if (resultado == 1) {
         cant1 += 1;
       }
@@ -459,14 +452,14 @@ export class ResultadoPage implements OnInit {
             case "⇔":
               resultado = this.bicondicional(b, a);
               break;
-            case "⊕":
-              resultado = this.xor(b, a);
+            case "↓":
+              resultado = this.nor(b, a);
               break;
             case "⊼":
               resultado = this.nand(b, a);
               break;
             case "⊻":
-              resultado = this.nor(b, a);
+              resultado = this.xor(b, a);
               break;
           }
         }
@@ -506,6 +499,10 @@ export class ResultadoPage implements OnInit {
         res += c + "&";
       }
       else if (this.varNames.includes(c) && this.varNames.includes(cNext)) {
+
+        res += c + "&";
+      }
+      else if (this.varNames.includes(c) && cNext === "(") {
 
         res += c + "&";
       }

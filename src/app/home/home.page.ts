@@ -1,6 +1,6 @@
 import { Component, OnInit, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
 
-import { ToastController, Platform } from '@ionic/angular';
+import { ToastController, Platform, NavController } from '@ionic/angular';
 
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
@@ -15,10 +15,10 @@ export class HomePage implements OnInit, AfterViewInit {
 
   constructor(platform: Platform,
     private admobFree: AdMobFree,
-
     public toastController: ToastController,
     statusBar: StatusBar,
-    splashScreen: SplashScreen
+    splashScreen: SplashScreen,
+    public navCtrl: NavController
   ) {
     platform.ready().then(() => {
       statusBar.styleDefault();
@@ -49,10 +49,9 @@ export class HomePage implements OnInit, AfterViewInit {
   pushAdmob() {
     const bannerConfig: AdMobFreeBannerConfig = {
       id: 'ca-app-pub-4665787383933447/6762703339',
-      //id: 'ca-app-pub-3940256099942544/6300978111',
-      //
       isTesting: false,
       autoShow: true,
+
     };
     this.admobFree.banner.config(bannerConfig);
 
@@ -70,8 +69,8 @@ export class HomePage implements OnInit, AfterViewInit {
   infijaAux: string = "";
 
   variables: string[] = [];
-  operadores: string = "!&|()⇔⇒⊼⊻⊕";
-  opr2var: string = "|&⇔⇒⊼⊻⊕";
+  operadores: string = "!&|()⇔⇒⊼⊻↓";
+  opr2var: string = "|&⇔⇒⊼⊻↓";
   varMays: string = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
   varNames: string = this.varMays + this.varMays.toLowerCase();
   tabla: any = [];
@@ -143,26 +142,15 @@ export class HomePage implements OnInit, AfterViewInit {
     { 1: "X", 0: "x" },
     { 1: "Y", 0: "y" },
     { 1: "Z", 0: "z" },
-
-
-
-
   ];
 
   //bandera para saber si una expresion es correcta
   ok: boolean = false;
-
-
   saveImg() {
-
   }
 
-  fMostrarProceso() {
-    this.mostrarProceso = !this.mostrarProceso;
-  }
 
   replaceAll(str: string, find: string, replace: string) {
-
     while (str.includes(find)) {
       str = str.replace(find, replace);
     }
@@ -217,18 +205,6 @@ export class HomePage implements OnInit, AfterViewInit {
 
   }
 
-
-
-  verExp(e: string) {
-    this.clearMem();
-    this.infija = e + '';
-    this.setModo(this.infija);
-    this.toPostfix();
-    this.verGuardadas = false;
-    this.ok = true;
-  }
-
-
   clear() {
     this.infija = "";
   }
@@ -240,13 +216,11 @@ export class HomePage implements OnInit, AfterViewInit {
       if (!(this.opr2var.includes(lasC) && this.opr2var.includes(c))) {
         this.infija = this.infija + c;
       }
-
     } else {
       if (!(this.opr2var.includes(c))) {
         this.infija = this.infija + c;
       }
     }
-
   }
 
   delete() {
@@ -265,340 +239,22 @@ export class HomePage implements OnInit, AfterViewInit {
     this.mostrarProceso = false;
   }
 
-
-
-
   //Cambiar de mayusculas a minusculas
   changeCase() {
     if (this.caseMm == 1) this.caseMm = 0;
     else this.caseMm = 1;
   }
 
-  toPostfix() {
-    this.ok = false;
-    if (this.infija === "") return;
-    this.infijaOrg = this.infija;
-
-    if (this.modo == 2) {
-      this.infija = this.replaceAll(this.infija, "∧", "&");
-      this.infija = this.replaceAll(this.infija, "∨", "|");
-      this.infija = this.replaceAll(this.infija, "¬", "!");
-    }
-
-    this.clearMem();
-
-    this.infija = this.check(this.infija);
-    this.infijaAux = this.infija;
-    let prec = {};
-    prec["⊼"] = 8;
-    prec["⊻"] = 7;
-    prec["!"] = 6;
-    prec["&"] = 5;
-    prec["|"] = 4;
-    prec["⊕"] = 4;
-    prec["⇒"] = 2;
-    prec["⇔"] = 1;
-    prec["("] = 0;
-
-    let opStack = [];
-    let postfixList = [];
-
-    for (const caracter of this.infija) {
-      if (!this.operadores.includes(caracter)) {
-        postfixList.push(caracter);
-      }
-      else if (caracter === '(') {
-
-        opStack.push(caracter);
-
-      }
-      else if (caracter === ')') {
-        let topToken = opStack.pop();
-        while (topToken != "(") {
-          postfixList.push(topToken);
-          topToken = opStack.pop();
-        }
-
-
-      } else {
-
-        while (opStack.length != 0 && (prec[opStack[opStack.length - 1]] > prec[caracter])) {
-          postfixList.push(opStack.pop())
-        }
-        opStack.push(caracter);
-      }
-    }
-    while (opStack.length > 0) {
-      postfixList.push(opStack.pop());
-    }
-    this.postfija = "";
-    this.postfija = postfixList.join("");
-    //this.router.navigate(["/evaluador/"+strPostfix+"/"+this.infija])
-    this.generarTabla();
-    this.ok = true;
-
-    //return strPostfix;
-
-  }
-
-  normalize(oper) {
-    if (this.modo == 2) {
-      oper = this.replaceAll(oper, "&", "∧");
-      oper = this.replaceAll(oper, "|", "∨");
-      oper = this.replaceAll(oper, "!", "¬");
-    }
-    return oper;
-  }
-
-  checkParentesis(exp: string) {
-    let iL = this.infija.indexOf(exp);
-    if (iL < 0) return false;
-    let iR = iL + exp.length;
-    if (iL > 0 && iR <= this.infija.length - 1) {
-      let cR = this.infija[iR];
-      let cL = this.infija[iL - 1];
-      if (cR === ")" && cL === "(") return true;
-    }
-
-    return false;
-
-  }
-
-  getProceso(postfija: string) {
-    let pila = [];
-    this.proceso = [];
-    for (const c of postfija) {
-      let oper = "";
-      if (this.operadores.includes(c)) {
-        // Evaluar
-        let a = pila.pop();
-        if (this.opr2var.includes(c)) {
-          let b = pila.pop();
-          let operator = this.opr2var[this.opr2var.indexOf(c)];
-          oper = b + operator + a;
-        }
-
-        if (c === "!") {
-          oper = "!" + a;
-        }
-        let aux = oper;
-
-        if (this.checkParentesis(aux)) {
-
-          pila.push("(" + oper + ")");
-        }
-        else {
-          pila.push(oper);
-        }
-        this.proceso.push({ exp: oper, tabla: [] });
-      } else {
-        pila.push(c);
-      }
+  verResultado() {
+    //'/resultado/'+infija
+    if (this.validar()) {
+      this.navCtrl.navigateForward('/resultado/' + this.infija);
     }
   }
 
+  validar() {
 
-
-
-  generarTabla() {
-    this.tabla = [];
-    for (const caracter of this.postfija) {
-      if (!this.operadores.includes(caracter) && !this.variables.includes(caracter)) {
-        this.variables.push(caracter);
-      }
-    }
-
-    this.variables = this.variables.sort();
-
-    let nCombinaciones = Math.pow(2, this.variables.length);
-    this.getProceso(this.postfija);
-
-    let cant0 = 0;
-    let cant1 = 0;
-
-    for (let i = 0; i < nCombinaciones; i++) {
-      let combinacion = this.nBits(i.toString(2), this.variables.length)
-      let susChida = this.sustituir(combinacion, this.postfija);
-      let resultado = this.evaluar(susChida);
-
-      if (resultado == 1) {
-        cant1 += 1;
-      }
-
-      if (resultado == 0) {
-        cant0 += 1;
-      }
-
-      this.tabla.push((combinacion + resultado).split(""));
-    }
-
-    if (cant1 == nCombinaciones) {
-      this.diagnostico = "Tautología";
-    }
-
-    else if (cant0 == nCombinaciones) {
-      this.diagnostico = "Contradicción";
-    }
-
-    else {
-      this.diagnostico = "Contingencia";
-    }
-
-    if (this.modo == 2) {
-      this.infija = this.replaceAll(this.infija, "&", "∧");
-      this.infija = this.replaceAll(this.infija, "|", "∨");
-      this.infija = this.replaceAll(this.infija, "!", "¬");
-    }
-    this.infija = this.infijaOrg;
-
-
+    return true;
   }
-
-  sustituir(combinacion, postfija) {
-    let auxPost = postfija;
-    for (const caracter of auxPost) {
-      if (this.variables.includes(caracter)) {
-        auxPost = this.replaceAll(auxPost, caracter, combinacion[this.variables.indexOf(caracter)]);
-      }
-    }
-
-    return auxPost;
-  }
-
-  nBits(bin, n) {
-    while (bin.length < n) {
-      bin = "0" + bin;
-    }
-    return bin;
-  }
-
-  evaluar(expresion: string) {
-    let pila = [];
-
-    let iAux = 0;
-    for (let i = 0; i < expresion.length; i++) {
-      let c = expresion[i];
-
-      if (this.operadores.includes(c)) {
-        // Evaluar
-        let a = parseInt(pila.pop());
-        let resultado;
-        if (this.opr2var.includes(c)) {
-          let b = parseInt(pila.pop());
-          switch (c) {
-            case "|":
-              resultado = this.or(b, a);
-              break;
-            case "&":
-              resultado = this.and(b, a);
-              break;
-            case "⇒":
-              resultado = this.condicional(b, a);
-              break;
-            case "⇔":
-              resultado = this.bicondicional(b, a);
-              break;
-            case "⊕":
-              resultado = this.xor(b, a);
-              break;
-            case "⊼":
-              resultado = this.nand(b, a);
-              break;
-            case "⊻":
-              resultado = this.nor(b, a);
-              break;
-          }
-        }
-        if (c === "!") {
-          resultado = this.not(a);
-        }
-
-        pila.push(resultado);
-        this.proceso[iAux].tabla.push(resultado);
-        iAux += 1;
-      } else {
-        pila.push(c);
-      }
-    }
-
-    return pila.pop();
-  }
-
-
-
-  //Sustituir dos varibles juntas por la operación AND
-  check(infija: string) {
-    let res = "";
-    for (let i = 0; i < infija.length - 1; i++) {
-      let c = infija[i];
-      let cNext = infija[i + 1];
-      if ((cNext === "!" && this.varNames.includes(c))) {
-
-        res += c + "&";
-      }
-      else if (c === ")" && cNext === "(") {
-
-        res += c + "&";
-      }
-      else if (this.varNames.includes(c) && this.varNames.includes(cNext)) {
-
-        res += c + "&";
-      }
-      else {
-        res += c
-      }
-
-    }
-    let lastC = infija[infija.length - 1];
-    return res + lastC;
-  }
-
-
-  or(a, b) {
-    if (a == 1 || b == 1) return 1;
-    return 0;
-  }
-
-  and(a, b) {
-    if (a == 1 && b == 1) return 1;
-    return 0;
-  }
-
-  not(a) {
-    if (a == 1) return 0;
-    return 1;
-  }
-
-
-  xor(a, b) {
-    if (a == b) return 0;
-    return 1;
-  }
-
-  nand(a, b) {
-    return this.not(this.and(a, b));
-  }
-
-  xnor(a, b) {
-    return this.not(this.xor(a, b))
-  }
-
-  nor(a, b) {
-    return this.not(this.or(a, b));
-  }
-
-
-  condicional(a, b) {
-    if (a == 1 && b == 0) return 0;
-    return 1;
-  }
-
-  bicondicional(a, b) {
-    if (a == b) return 1;
-    return 0;
-  }
-
-
-
 
 }
