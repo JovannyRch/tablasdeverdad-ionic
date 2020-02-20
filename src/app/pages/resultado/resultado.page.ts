@@ -17,14 +17,16 @@ export class ResultadoPage implements OnInit {
     public toastController: ToastController,
 
     private navCtrl: NavController,
-    private repositorio: RepositorioService
+    private repositorio: RepositorioService,
   ) { }
 
   expresion: any;
   guardarEnNube: boolean = false;
   descripcion: string = "";
   ngOnInit() {
-    this.infija = this.activeRoute.snapshot.paramMap.get("expresion");
+    this.activeRoute.queryParams.subscribe(params => {
+      this.infija = params['infija'];
+    });
     this.desc = this.activeRoute.snapshot.paramMap.get("desc");
     this.verExp(this.infija);
     this.toPostfix();
@@ -235,14 +237,17 @@ export class ResultadoPage implements OnInit {
 
   toPostfix() {
     this.ok = false;
-    if (this.infija === "") return;
     this.infijaOrg = this.infija;
+
 
     if (this.modo == 2) {
       this.infija = this.replaceAll(this.infija, "∧", "&");
       this.infija = this.replaceAll(this.infija, "∨", "|");
       this.infija = this.replaceAll(this.infija, "¬", "!");
     }
+
+    this.infija = this.infija.replace('[', '(');
+    this.infija = this.infija.replace(']', ')');
 
     this.clearMem();
 

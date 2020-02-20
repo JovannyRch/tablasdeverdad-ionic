@@ -6,7 +6,7 @@
   <br><br>
   <i>Click para ver la tabla</i>
   <ion-list>
-    <ion-item *ngFor="let e of expresionesGuardadas; let i=index" [routerLink]="'/resultado/'+e"
+    <ion-item *ngFor="let e of expresionesGuardadas; let i=index" (click)="verResultado(e)"
       [ngStyle]="{'background-color: red;': i%2 == 0}">
       <ion-label>{{e}}</ion-label>
 

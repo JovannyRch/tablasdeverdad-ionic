@@ -8,8 +8,9 @@ const routes: Routes = [
   { path: 'temas', loadChildren: './pages/temas/temas.module#TemasPageModule' },
   { path: 'contenido/:indice/:tema', loadChildren: './pages/contenido/contenido.module#ContenidoPageModule' },
   { path: 'repositorio', loadChildren: './pages/repositorio/repositorio.module#RepositorioPageModule' },
-  { path: 'resultado/:expresion/:desc', loadChildren: './pages/resultado/resultado.module#ResultadoPageModule' },
-  { path: 'resultado/:expresion', loadChildren: './pages/resultado/resultado.module#ResultadoPageModule' },  { path: 'memoria', loadChildren: './pages/memoria/memoria.module#MemoriaPageModule' },
+  { path: 'resultado/:desc', loadChildren: './pages/resultado/resultado.module#ResultadoPageModule' },
+  { path: 'resultado', loadChildren: './pages/resultado/resultado.module#ResultadoPageModule' },
+  { path: 'memoria', loadChildren: './pages/memoria/memoria.module#MemoriaPageModule' },
 
 
 

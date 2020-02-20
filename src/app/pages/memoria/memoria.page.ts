@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Storage } from '@ionic/storage';
 import { NavController } from "@ionic/angular";
+import { Router, NavigationExtras } from "@angular/router";
+
 @Component({
   selector: 'app-memoria',
   templateUrl: './memoria.page.html',
@@ -10,7 +12,8 @@ export class MemoriaPage implements OnInit {
   expresionesGuardadas: any = [];
   constructor(
     private storage: Storage,
-    private navCtrl: NavController
+    private navCtrl: NavController,
+    private router: Router,
   ) { }
 
   ngOnInit() {
@@ -23,6 +26,12 @@ export class MemoriaPage implements OnInit {
     });
   }
 
+  verResultado(infija) {
+    let navigationExtras: NavigationExtras = {
+      queryParams: { infija }
+    };
+    this.router.navigate(["resultado/"], navigationExtras);
+  }
 
 
   atras() {

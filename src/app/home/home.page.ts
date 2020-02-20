@@ -4,6 +4,7 @@ import { ToastController, Platform, NavController } from '@ionic/angular';
 
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
+import { Router, NavigationExtras } from "@angular/router";
 import { AdMobFree, AdMobFreeBannerConfig } from '@ionic-native/admob-free/ngx';
 //importamos nuestro plugin
 @Component({
@@ -18,11 +19,13 @@ export class HomePage implements OnInit, AfterViewInit {
     public toastController: ToastController,
     statusBar: StatusBar,
     splashScreen: SplashScreen,
-    public navCtrl: NavController
+    public navCtrl: NavController,
+    private router: Router,
+
   ) {
     platform.ready().then(() => {
-      statusBar.styleDefault();
-      splashScreen.hide();
+      //statusBar.styleDefault();
+      //splashScreen.hide();
       //this.pushAdmob();
     });
     this.backButtonEvent();
@@ -30,9 +33,10 @@ export class HomePage implements OnInit, AfterViewInit {
 
   backButtonEvent() {
     document.addEventListener("backbutton", () => {
-
-      console.log("Atras");
-
+      console.log(this.router.url);
+      if (this.router.url.toString().includes('/home')) {
+        navigator['app'].exitApp();
+      }
     });
   }
 
@@ -42,23 +46,38 @@ export class HomePage implements OnInit, AfterViewInit {
   }
   expresionesGuardadas: any = [];
   ngOnInit() {
-
-    this.pushAdmob();
-  }
-
-  pushAdmob() {
     const bannerConfig: AdMobFreeBannerConfig = {
       id: 'ca-app-pub-4665787383933447/6762703339',
       isTesting: false,
       autoShow: true,
-
+    };
+    const videoConfig: AdMobFreeBannerConfig = {
+      id: 'ca-app-pub-4665787383933447/1334937592',
+      isTesting: false,
+      autoShow: true,
     };
     this.admobFree.banner.config(bannerConfig);
+    this.admobFree.rewardVideo.config(videoConfig);
+
+
+    // this.pushAdmob();
+
+    //this.mostrarVideo();
+  }
+
+  mostrarBanner() {
 
     this.admobFree.banner.prepare()
       .then(() => {
         this.admobFree.banner.show();
         console.log("show banner");
+      });
+  }
+
+  mostrarVideo() {
+    this.admobFree.rewardVideo.prepare()
+      .then(() => {
+        this.admobFree.rewardVideo.show();
       });
   }
 
@@ -247,13 +266,22 @@ export class HomePage implements OnInit, AfterViewInit {
 
   verResultado() {
     //'/resultado/'+infija
+    console.log(this.infija);
     if (this.validar()) {
-      this.navCtrl.navigateForward('/resultado/' + this.infija);
+      /*  let random = Math.random() * 100;
+       console.log(random);
+       if (random >= 69) {
+        
+       } */
+      let navigationExtras: NavigationExtras = {
+        queryParams: { infija: this.infija }
+      };
+      this.router.navigate(["resultado"], navigationExtras);
     }
   }
 
   validar() {
-
+    if (this.infija === "") return false;
     return true;
   }
 

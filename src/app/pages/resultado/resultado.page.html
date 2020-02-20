@@ -13,8 +13,38 @@
           <ion-icon slot="icon-only" name="camera"></ion-icon>
         </ion-button>
         -->
+    <div class="ion-text-right">
+      <ion-chip class="ion-text-center"
+        style="border-radius: 10px; border: 1px solid rgb(221, 109, 44); padding-left: 3%;" (click)="guardarExp()"
+        color="vibrant">
+        <ion-label>
+          <ion-icon slot="start" name="save"></ion-icon>
+        </ion-label>
+      </ion-chip>
+
+      <ion-chip class="ion-text-center"
+        style="border-radius: 10px; border: 1px solid rgb(221, 109, 44); padding-left: 3%;"
+        (click)="activarGuardarEnNube()" color="vibrant">
+        <ion-label>
+          <ion-icon name="cloud-circle" style="zoom:1.5;"></ion-icon>
+
+        </ion-label>
+      </ion-chip>
+      <ion-chip style="font-size:12px" routerLink="/about" color="vibrant">
+        Contactame
+      </ion-chip>
+    </div>
+
     <br>
+    <div class="ion-text-center">
+      <ion-button href="https://play.google.com/store/apps/details?id=com.jovannyrch.tablasdeverdad" fill="clear"
+        color="vibrant">
+        <ion-icon slot="start" name="star"></ion-icon> Califica la app
+      </ion-button>
+    </div>
+
     <div *ngIf="desc">
+      <br>
       <small><i>Descripción:</i></small>
       <p>{{desc}}</p>
     </div>
@@ -37,13 +67,14 @@
             <span *ngIf="conVsFs">V/F</span>
           </ion-button>
         </ion-col>
+
       </ion-row>
 
 
       <table>
         <thead>
           <th *ngFor="let variable of variables">{{variable}}</th>
-          <th>f</th>
+          <th>F</th>
         </thead>
         <tbody>
           <tr *ngFor="let fila of tabla">
@@ -63,22 +94,6 @@
             <ion-label class="ion-text-center">
               <span *ngIf="!mostrarProceso">Mostrar proceso</span>
               <span *ngIf="mostrarProceso">Ocultar proceso</span>
-            </ion-label>
-          </ion-chip>
-          <ion-chip class="ion-text-center"
-            style="border-radius: 10px; border: 1px solid rgb(221, 109, 44); padding-left: 3%;" (click)="guardarExp()"
-            color="vibrant">
-            <ion-label>
-              Guardar en memoria
-            </ion-label>
-          </ion-chip>
-
-          <ion-chip class="ion-text-center"
-            style="border-radius: 10px; border: 1px solid rgb(221, 109, 44); padding-left: 3%;"
-            (click)="activarGuardarEnNube()" color="vibrant">
-            <ion-label>
-              <ion-icon name="cloud-circle" style="zoom:1.5;"></ion-icon>
-              Guardar en nube
             </ion-label>
           </ion-chip>
 
@@ -110,11 +125,7 @@
       </ion-grid>
 
     </div>
-    <div class="ion-text-center">
-      <ion-chip style="font-size:12px" routerLink="/about" color="vibrant">
-        Acerca de ...
-      </ion-chip>
-    </div>
+
 
 
 
@@ -123,7 +134,9 @@
 </ion-content>
 
 <ion-content *ngIf="guardarEnNube" class="ion-padding">
-
+  <div class="ion-text-center">
+    <b>Subir a la nube</b>
+  </div>
   <ion-grid fixed>
     <ion-row class="ion-text-center">
       <ion-col size="12">

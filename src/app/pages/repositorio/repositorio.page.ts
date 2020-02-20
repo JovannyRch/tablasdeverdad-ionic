@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { RepositorioService } from "../../services/repositorio.service";
+import { Router, NavigationExtras } from "@angular/router";
 
 @Component({
   selector: 'app-repositorio',
@@ -9,7 +10,8 @@ import { RepositorioService } from "../../services/repositorio.service";
 export class RepositorioPage implements OnInit {
 
   constructor(
-    private db: RepositorioService
+    private db: RepositorioService,
+    private router: Router,
   ) { }
 
   expresion: any = {
@@ -23,7 +25,13 @@ export class RepositorioPage implements OnInit {
   ngOnInit() {
     this.cargarExpresiones();
   }
-
+  verResultado(infija, desc) {
+    //'/resultado/'+infija
+    let navigationExtras: NavigationExtras = {
+      queryParams: { infija }
+    };
+    this.router.navigate(["resultado/" + desc], navigationExtras);
+  }
   cargarExpresiones() {
     this.cargando = true;
     this.db.read().subscribe(

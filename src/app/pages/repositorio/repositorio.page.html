@@ -11,7 +11,7 @@
       </ion-col>
     </ion-row>
   </ion-grid>
-  <ion-item detail *ngFor="let e of expresiones" [routerLink]="'/resultado/'+e.expresion+'/'+e.desc">
+  <ion-item detail *ngFor="let e of expresiones" (click)="verResultado(e.expresion,e.desc)">
     <ion-card style="width: 100%;" no-border>
       <ion-card-header>
 

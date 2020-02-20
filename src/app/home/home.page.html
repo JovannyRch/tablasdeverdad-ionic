@@ -22,7 +22,7 @@
         </ion-col>
 
       </ion-row>
-      <ion-row style="height: 24vh;">
+      <ion-row style="height: 20vh;">
         <ion-col size="12"
           style="text-align: right; padding-top: 15%; padding-left: 4%; padding-right: 4%; font-size: 180%">{{infija}}
         </ion-col>
@@ -46,6 +46,12 @@
 
               <ion-col *ngFor="let l of letras" (click)="clickVar(l[caseMm])" size="3" class="borde btn">
                 {{l[caseMm]}}
+              </ion-col>
+              <ion-col size="3" (click)="clickVar('[')" class="btn borde operador">
+                [
+              </ion-col>
+              <ion-col size="3" (click)="clickVar(']')" class="btn borde  operador">
+                ]
               </ion-col>
 
 
