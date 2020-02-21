@@ -254,10 +254,10 @@ export class ResultadoPage implements OnInit {
     this.infija = this.check(this.infija);
     this.infijaAux = this.infija;
     let prec = {};
+    prec["!"] = 9;
     prec["⊼"] = 8;
     prec["⊻"] = 7;
     prec["↓"] = 6;
-    prec["!"] = 5;
     prec["&"] = 4;
     prec["|"] = 3;
     prec["⇒"] = 2;
