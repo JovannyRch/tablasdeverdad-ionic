@@ -1,6 +1,19 @@
 <ion-content>
 
 
+  <ion-fab vertical="top" horizontal="end">
+    <ion-fab-button color="vibrant">
+      <ion-icon name="help"></ion-icon>
+    </ion-fab-button>
+    <ion-fab-list side="boottom">
+      <ion-fab-button (click)="clickVar(opers.and[modo])">AND</ion-fab-button>
+      <ion-fab-button (click)="clickVar(opers.or[modo])">OR</ion-fab-button>
+      <ion-fab-button (click)="clickVar(opers.not[modo])">NOT</ion-fab-button>
+      <ion-fab-button (click)="clickVar('↓')">NOR</ion-fab-button>
+      <ion-fab-button (click)="clickVar('⊼')">NAND</ion-fab-button>
+      <ion-fab-button (click)="clickVar('⊕')">XOR</ion-fab-button>
+    </ion-fab-list>
+  </ion-fab>
 
   <div text-center>
 
@@ -14,7 +27,7 @@
             <ion-icon style="zoom:1.5;" name="cloud" style="zoom:1.5;"></ion-icon>
           </ion-chip>
           <ion-chip style="font-size:12px" routerLink="/temas" color="vibrant">
-            <ion-icon style="zoom:1.5;" name="help" style="zoom:1.5;"></ion-icon>
+            <ion-icon style="zoom:1.5;" name="book" style="zoom:1.5;"></ion-icon>
           </ion-chip>
           <ion-chip style="font-size:12px" routerLink="/about" color="vibrant">
             <ion-icon style="zoom:1.5;" name="information" style="zoom:1.5;"></ion-icon>
@@ -57,10 +70,12 @@
 
             </ion-row>
             <ion-row class="operadores">
-              <ion-col class="btn borde" (click)="clickVar('⊻')" style="font-size: 100%" size="4">⊻</ion-col>
-              <ion-col class="btn borde" (click)="clickVar('⊼')" style="font-size: 100%" size="4">⊼</ion-col>
-              <ion-col class="btn borde" (click)="clickVar('↓')" style="font-size: 100%" size="4">↓</ion-col>
+              <ion-col class="btn borde" (click)="clickVar('⊕')" style="font-size: 100%" size="3">⊕</ion-col>
+              <ion-col class="btn borde" (click)="clickVar('⊻')" style="font-size: 100%" size="3">⊻</ion-col>
+              <ion-col class="btn borde" (click)="clickVar('⊼')" style="font-size: 100%" size="3">⊼</ion-col>
+              <ion-col class="btn borde" (click)="clickVar('↓')" style="font-size: 100%" size="3">↓</ion-col>
             </ion-row>
+
           </ion-grid>
 
         </ion-col>

@@ -88,8 +88,8 @@ export class HomePage implements OnInit, AfterViewInit {
   infijaAux: string = "";
 
   variables: string[] = [];
-  operadores: string = "!&|()⇔⇒⊼⊻↓";
-  opr2var: string = "|&⇔⇒⊼⊻↓";
+  operadores: string = "!&|()⇔⇒⊼⊻↓⊕";
+  opr2var: string = "|&⇔⇒⊼⊻↓⊕";
   varMays: string = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
   varNames: string = this.varMays + this.varMays.toLowerCase();
   tabla: any = [];
@@ -229,8 +229,9 @@ export class HomePage implements OnInit, AfterViewInit {
   }
 
   clickVar(c: string) {
-    if (this.infija.length > 0 && this.operadores.includes(c)) {
-      let lasC = this.infija[this.infija.length - 1];
+    this.infija = this.infija + c;
+    /* let lasC = this.infija[this.infija.length - 1];
+      if (this.infija.length > 0 && this.operadores.includes(c)) {
 
       if (!(this.opr2var.includes(lasC) && this.opr2var.includes(c))) {
         this.infija = this.infija + c;
@@ -239,8 +240,9 @@ export class HomePage implements OnInit, AfterViewInit {
       if (!(this.opr2var.includes(c))) {
         this.infija = this.infija + c;
       }
-    }
+    } */
   }
+
 
   delete() {
     if (this.infija.length > 0) {

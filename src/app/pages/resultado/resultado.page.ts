@@ -45,6 +45,7 @@ export class ResultadoPage implements OnInit {
     this.descripcion = "";
   }
 
+
   guardarDB() {
     let registro = {
       expresion: this.infijaOrg,
@@ -54,6 +55,8 @@ export class ResultadoPage implements OnInit {
     this.repositorio.create(registro);
     this.descripcion = "";
     this.guardarEnNube = false;
+    this.presentToast("Se ha guardado en la nube :D");
+
   }
 
 
@@ -66,8 +69,8 @@ export class ResultadoPage implements OnInit {
   infijaAux: string = "";
 
   variables: string[] = [];
-  operadores: string = "!&|()⇔⇒⊼⊻↓";
-  opr2var: string = "|&⇔⇒⊼⊻↓";
+  operadores: string = "!&|()⇔⇒⊼⊻↓⊕";
+  opr2var: string = "|&⇔⇒⊼⊻↓⊕";
   varMays: string = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
   varNames: string = this.varMays + this.varMays.toLowerCase();
   tabla: any = [];
@@ -254,10 +257,12 @@ export class ResultadoPage implements OnInit {
     this.infija = this.check(this.infija);
     this.infijaAux = this.infija;
     let prec = {};
+
     prec["!"] = 9;
     prec["⊼"] = 8;
     prec["⊻"] = 7;
-    prec["↓"] = 6;
+    prec["⊕"] = 6;
+    prec["↓"] = 5;
     prec["&"] = 4;
     prec["|"] = 3;
     prec["⇒"] = 2;
@@ -463,7 +468,11 @@ export class ResultadoPage implements OnInit {
             case "⊼":
               resultado = this.nand(b, a);
               break;
+
             case "⊻":
+              resultado = this.xor(b, a);
+              break;
+            case "⊕":
               resultado = this.xor(b, a);
               break;
           }
